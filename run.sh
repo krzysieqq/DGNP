@@ -26,7 +26,7 @@ function setup_local_project() {
   # Add required import
   sed -i '1,/from pathlib import Path/{x;/first/s///;x;s/from pathlib import Path/from pathlib import Path\nfrom os import environ/;}' ./app/$1/settings.py
   sed -i "1,/SECRET_KEY =.*/{x;/first/s///;x;s/SECRET_KEY =.*/SECRET_KEY = environ.get('DJANGO_SECRET_KEY', '')/;}" ./app/$1/settings.py
-  sed -i "1,/ALLOWED_HOSTS = \[\]/{x;/first/s///;x;s/ALLOWED_HOSTS = \[\]/environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')/;}" ./app/$1/settings.py
+  sed -i "1,/ALLOWED_HOSTS = \[\]/{x;/first/s///;x;s/ALLOWED_HOSTS = \[\]/ALLOWED_HOSTS = environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')/;}" ./app/$1/settings.py
   sed -i "1,/'ENGINE': 'django.db.backends.sqlite3',/{x;/first/s///;x;s/'ENGINE': 'django.db.backends.sqlite3',/'ENGINE': 'django.db.backends.postgresql',/;}" ./app/$1/settings.py
   sed -i "1,/'NAME': BASE_DIR \/ 'db.sqlite3',/{x;/first/s///;x;s/'NAME': BASE_DIR \/ 'db.sqlite3',/'NAME': environ.get('DB_NAME', 'postgres'),\n        'USER': environ.get('DB_USER', 'postgres'),\n        'PASSWORD': environ.get('DB_PASS', 'postgres'),\n        'HOST': environ.get('DB_HOST', 'db'),\n        'PORT': environ.get('DB_PORT', '5432'),/;}" ./app/$1/settings.py
 }
